@@ -1,3 +1,4 @@
+using Core.Interfaces;
 using InfraStructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,6 +17,10 @@ builder.Services.AddDbContext<StoreContext>(opt =>
     opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+//Inject the ProductRepository Service as scoped service, othr options could be transient and Singleton
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+// builder.Services.AddTransient<IProductRepository, ProductRepository>();
+// builder.Services.AddSingleton<IProductRepository, ProductRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -30,5 +35,20 @@ if (app.Environment.IsDevelopment())
 app.UseAuthorization();
 
 app.MapControllers();
+
+// automate EF DB creation
+using var scope = app.Services.CreateScope();
+var services = scope.ServiceProvider;
+var context = services.GetRequiredService<StoreContext>();
+var logger = services.GetRequiredService<ILogger<Program>>();
+try
+{
+    await context.Database.MigrateAsync();
+    await StoreContextSeed.SeedAsync(context);
+}
+catch (Exception ex)
+{
+    logger.LogError(ex, "An error occurred during migration");
+}
 
 app.Run();

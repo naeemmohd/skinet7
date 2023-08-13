@@ -12,8 +12,9 @@ for scaffolding EF code migration -
  tool - dotnet tool install --global dotnet-ef --version 7.0.10
  migration - dotnet ef migrations add InitialCreate -o Data/Migrations
  create/update DB - dotnet ef database update
-
-
+ for dropping an exiting database - dotnet ef database drop -p InfraStructure -s API
+ for dropping an exiting migration - dotnet ef migrations remove -p InfraStructure -s API
+ for adding new migration - dotnet ef migrations add InitialCreate -p InfraStructure -s API -o Data/Migrations
 Dotnet commands - 
 
     for list of commands - dotnew new list
@@ -41,8 +42,8 @@ To add a project from CLI to GitHub
 
     dotnet new gitignore
 
-    git add -a
-    git commit -m "Describe your commit here"
+    git add --all
+    git commit -m "End of section 3"
 
     git remote add origin https://github.com/naeemmohd/skinet7.git
 
@@ -54,3 +55,4 @@ To add a project from CLI to GitHub
     git push origin main
 
     git config --list
+    
