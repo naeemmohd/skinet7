@@ -18,9 +18,15 @@ builder.Services.AddDbContext<StoreContext>(opt =>
 });
 
 //Inject the ProductRepository Service as scoped service, othr options could be transient and Singleton
+// ProductRepository registered
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 // builder.Services.AddTransient<IProductRepository, ProductRepository>();
 // builder.Services.AddSingleton<IProductRepository, ProductRepository>();
+
+// GenericRepository registered 
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -31,6 +37,8 @@ if (app.Environment.IsDevelopment())
 }
 
 // app.UseHttpsRedirection();
+
+app.UseStaticFiles();
 
 app.UseAuthorization();
 
