@@ -1,3 +1,4 @@
+using API.Extensions;
 using API.Errors;
 using API.Middleware;
 using Core.Interfaces;
@@ -11,41 +12,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
-//Add DBContext
-builder.Services.AddDbContext<StoreContext>(opt =>
-{
-    opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
-});
+//most of the code moved to the Extension method
+builder.Services.AddApplicationServices(builder.Configuration);
 
-//Inject the ProductRepository Service as scoped service, othr options could be transient and Singleton
-// ProductRepository registered
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
-// builder.Services.AddTransient<IProductRepository, ProductRepository>();
-// builder.Services.AddSingleton<IProductRepository, ProductRepository>();
-
-// GenericRepository registered 
-builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-builder.Services.Configure <ApiBehaviorOptions>(options =>
-    options.InvalidModelStateResponseFactory = actionContext => 
-    {
-        var errors = actionContext.ModelState
-        .Where(w=> w.Value.Errors.Count>0)
-        .SelectMany(m=> m.Value.Errors)
-        .Select(s=> s.ErrorMessage).ToArray();
-
-        var errorResponse = new ApiValidationErrorResponse
-        {
-            Errors = errors
-        };
-
-        return new BadRequestObjectResult(errorResponse);
-    }
-);
 var app = builder.Build();
 
 // Add Custom Exception Middleware
