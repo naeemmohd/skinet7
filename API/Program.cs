@@ -1,6 +1,10 @@
+using API.Errors;
+using API.Middleware;
 using Core.Interfaces;
 using InfraStructure.Data;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Validations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,8 +30,29 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 // GenericRepository registered 
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.Configure <ApiBehaviorOptions>(options =>
+    options.InvalidModelStateResponseFactory = actionContext => 
+    {
+        var errors = actionContext.ModelState
+        .Where(w=> w.Value.Errors.Count>0)
+        .SelectMany(m=> m.Value.Errors)
+        .Select(s=> s.ErrorMessage).ToArray();
 
+        var errorResponse = new ApiValidationErrorResponse
+        {
+            Errors = errors
+        };
+
+        return new BadRequestObjectResult(errorResponse);
+    }
+);
 var app = builder.Build();
+
+// Add Custom Exception Middleware
+app.UseMiddleware<ExceptionMiddleware>();
+
+// Add Error Handler Middleware
+app.UseStatusCodePagesWithReExecute("/errors/{0}");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
