@@ -1,5 +1,5 @@
 Angular related with API Skinet
-To install cert
+To install certs
 mkdir ssl
 cd ssl
 choco install mkcert
