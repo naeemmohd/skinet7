@@ -15,6 +15,7 @@ namespace InfraStructure.Data
 				query = query.Where(spec.Criteria);
 			}
 			
+			//for sorting and filtering
 			if(spec.OrderBy !=null)
 			{
 				query = query.OrderBy(spec.OrderBy);
@@ -23,6 +24,11 @@ namespace InfraStructure.Data
 			if(spec.OrderByDescending !=null)
 			{
 				query = query.OrderByDescending(spec.OrderByDescending);
+			}
+			
+			if(spec.IsPagingEnabled)
+			{
+				query = query.Skip(spec.Skip).Take(spec.Take);
 			}
 
 			query = spec.Includes.Aggregate(query, (current, include) => current.Include(include));
