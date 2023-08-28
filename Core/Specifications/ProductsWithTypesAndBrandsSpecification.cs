@@ -9,6 +9,7 @@ namespace Core.Specifications
 		
 		//for filtering
 		: base(x=>
+			(string.IsNullOrEmpty(productSpecsParams.Search) || x.Name.ToLower().Contains(productSpecsParams.Search)) &&
 			(!productSpecsParams.BrandId.HasValue || x.ProductBrandId == productSpecsParams.BrandId) &&
 			(!productSpecsParams.TypeId.HasValue || x.ProductTypeId == productSpecsParams.TypeId)
 		)
