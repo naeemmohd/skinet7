@@ -6,50 +6,61 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Extensions
 {
-    public static class ApplicationServicesExtensions
-    {
-        //extension method
-        public static IServiceCollection AddApplicationServices(this IServiceCollection services, 
-            IConfiguration config)
-        {
-            
-        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-        services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen();
+	public static class ApplicationServicesExtensions
+	{
+		//extension method
+		public static IServiceCollection AddApplicationServices(this IServiceCollection services,
+			IConfiguration config)
+		{
 
-        //Add DBContext
-        services.AddDbContext<StoreContext>(opt =>
-        {
-            opt.UseSqlite(config.GetConnectionString("DefaultConnection"));
-        });
+			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+			services.AddEndpointsApiExplorer();
+			services.AddSwaggerGen();
 
-        //Inject the ProductRepository Service as scoped service, othr options could be transient and Singleton
-        // ProductRepository registered
-        services.AddScoped<IProductRepository, ProductRepository>();
-        // services.AddTransient<IProductRepository, ProductRepository>();
-        // services.AddSingleton<IProductRepository, ProductRepository>();
+			//Add DBContext
+			services.AddDbContext<StoreContext>(opt =>
+			{
+				opt.UseSqlite(config.GetConnectionString("DefaultConnection"));
+			});
 
-        // GenericRepository registered 
-        services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-        services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-        services.Configure <ApiBehaviorOptions>(options =>
-            options.InvalidModelStateResponseFactory = actionContext => 
-            {
-                var errors = actionContext.ModelState
-                .Where(w=> w.Value.Errors.Count>0)
-                .SelectMany(m=> m.Value.Errors)
-                .Select(s=> s.ErrorMessage).ToArray();
+			//Inject the ProductRepository Service as scoped service, othr options could be transient and Singleton
+			// ProductRepository registered
+			services.AddScoped<IProductRepository, ProductRepository>();
+			// services.AddTransient<IProductRepository, ProductRepository>();
+			// services.AddSingleton<IProductRepository, ProductRepository>();
 
-                var errorResponse = new ApiValidationErrorResponse
-                {
-                    Errors = errors
-                };
+			// GenericRepository registered 
+			services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+			services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+			services.Configure<ApiBehaviorOptions>(options =>
+				options.InvalidModelStateResponseFactory = actionContext =>
+				{
+					var errors = actionContext.ModelState
+					.Where(w => w.Value.Errors.Count > 0)
+					.SelectMany(m => m.Value.Errors)
+					.Select(s => s.ErrorMessage).ToArray();
 
-                return new BadRequestObjectResult(errorResponse);
-            }
-        );
+					var errorResponse = new ApiValidationErrorResponse
+					{
+						Errors = errors
+					};
 
-            return services;
-        }
-    }
+					return new BadRequestObjectResult(errorResponse);
+				}
+			);
+
+			// add CORS policy 
+			services.AddCors(opt =>
+			{
+				opt.AddPolicy("CorsPolicy", policy => 
+				{
+					policy.AllowAnyHeader()
+						.AllowAnyMethod()
+						.WithOrigins("https://localhost:4200");
+				});
+			});
+			
+			return services;
+		}
+	}
 }
