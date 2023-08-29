@@ -33,3 +33,5 @@ cd ssl
 choco install mkcert
 mkcert -install
 mkcert localhost
+
+JSON to TS convertor tool - https://transform.tools/json-to-typescript
