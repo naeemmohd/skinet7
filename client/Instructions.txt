@@ -35,3 +35,24 @@ mkcert -install
 mkcert localhost
 
 JSON to TS convertor tool - https://transform.tools/json-to-typescript
+
+To create modules
+  ng g m core --dry-run
+  ng g m core
+  ng g m shared
+  ng g m shop
+
+
+
+To create components under modules
+  ng g c shop/shop --dry-run
+  ng g c shop/shop --flat --skip-tests --dry-run
+  ng g c shop/shop --flat --skip-tests
+
+To create service/module under a modules
+  ng g s shop/shop --skip-tests --dry-run
+  ng g s shop/shop --skip-tests
+
+  ng g m shop/shop-routing --flat --dry-run
+
+  ng g c shop/product-item --skip-test --dry-run
