@@ -56,3 +56,12 @@ To add a project from CLI to GitHub
 
     git config --list
     
+	
+	git init
+	git branch -M main
+	git add --all
+	git commit -m "Intial commit for IMB MQ"
+	
+	git remote add origin https://github.com/naeemmohd/IBMMQ.git
+	git push -u origin main
+
