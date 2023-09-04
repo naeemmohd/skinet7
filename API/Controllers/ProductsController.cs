@@ -16,8 +16,8 @@ namespace API.Controllers
 		private readonly IGenericRepository<ProductType> _productTypesRepo;
 		private readonly IMapper _mapper;
 		public ProductsController(
-			IGenericRepository<Product> productsRepo, 
-			IGenericRepository<ProductBrand> productBrandsRepo, 
+			IGenericRepository<Product> productsRepo,
+			IGenericRepository<ProductBrand> productBrandsRepo,
 			IGenericRepository<ProductType> productTypesRepo,
 			IMapper mapper
 		)
@@ -28,24 +28,24 @@ namespace API.Controllers
 			_mapper = mapper;
 		}
 
-		[HttpGet]	
+		[HttpGet]
 		public async Task<ActionResult<Pagination<ProductToReturnDto>>> GetProducts(
-			[FromQuery]ProductSpecsParams productSpecsParams)
+			[FromQuery] ProductSpecsParams productSpecsParams)
 		{
 			var spec = new ProductsWithTypesAndBrandsSpecification(productSpecsParams);
-			
+
 			var countSpec = new ProductWithFiltersForCountSpecification(productSpecsParams);
 
 			var totalItems = await _productsRepo.CountAsync(countSpec);
 
 			var products = await _productsRepo.ListAsync(spec);
-			
+
 			var data = _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductToReturnDto>>(products);
 
 			return Ok(
 				new Pagination<ProductToReturnDto>(productSpecsParams.PageIndex, productSpecsParams.PageSize, totalItems, data)
 			);
-		} 
+		}
 
 		[HttpGet("{id}")]
 		[ProducesResponseType(StatusCodes.Status200OK)]

@@ -9,9 +9,9 @@ namespace API.Middleware
         private readonly RequestDelegate _next;
         private readonly ILogger<ExceptionMiddleware> _logger;
         private readonly IHostEnvironment _env;
-        public ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger, 
+        public ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger,
         IHostEnvironment env)
-        {   
+        {
             _next = next;
             _logger = logger;
             _env = env;
@@ -19,21 +19,22 @@ namespace API.Middleware
         }
         public async Task InvokeAsync(HttpContext context)
         {
-            try{
+            try
+            {
                 await _next(context);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogError(ex, ex.Message);
                 context.Response.ContentType = "application/json";
                 var internalServerError = (int)HttpStatusCode.InternalServerError;
-                context.Response.StatusCode = internalServerError;   
+                context.Response.StatusCode = internalServerError;
 
                 var response = _env.IsDevelopment()
                 ? new ApiException(internalServerError, ex.Message, ex.StackTrace.ToString())
                 : new ApiException(internalServerError);
 
-                var options = new JsonSerializerOptions{PropertyNamingPolicy= JsonNamingPolicy.CamelCase};
+                var options = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
 
                 await context.Response.WriteAsync(JsonSerializer.Serialize(response, options));
             }

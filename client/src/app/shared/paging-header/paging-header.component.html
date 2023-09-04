@@ -1,21 +1,19 @@
 <header *ngIf="totalCount && pageNumber && pageSize">
-    <span *ngIf="totalCount">
-        Showing 
-        <strong>
-            {{(pageNumber -1) * pageSize +1}} -
-            {{pageNumber * pageSize > totalCount
-                ? totalCount
-                : pageNumber * pageSize
-            }}
-        </strong> 
-        of 
-        <strong>
-            {{totalCount}}
-        </strong> 
-        results
-    </span>
+  <span *ngIf="totalCount">
+    Showing
+    <strong>
+      {{ (pageNumber - 1) * pageSize + 1 }} -
+      {{
+        pageNumber * pageSize > totalCount ? totalCount : pageNumber * pageSize
+      }}
+    </strong>
+    of
+    <strong>
+      {{ totalCount }}
+    </strong>
+    results
+  </span>
 </header>
 <span *ngIf="!totalCount">
-    There are <strong>0</strong> results for this filter/search
+  There are <strong>0</strong> results for this filter/search
 </span>
-

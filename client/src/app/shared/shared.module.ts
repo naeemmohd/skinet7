@@ -4,20 +4,12 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { PagingHeaderComponent } from './paging-header/paging-header.component';
 import { PagerComponent } from './pager/pager.component';
 
-
 @NgModule({
-  declarations: [
-    PagingHeaderComponent,
-    PagerComponent
-  ],
+  declarations: [PagingHeaderComponent, PagerComponent],
   imports: [
     CommonModule,
-    PaginationModule.forRoot() //so that its used as singleton
+    PaginationModule.forRoot(), //so that its used as singleton
   ],
-  exports: [
-    PaginationModule,
-    PagingHeaderComponent,
-    PagerComponent
-  ]
+  exports: [PaginationModule, PagingHeaderComponent, PagerComponent],
 })
-export class SharedModule { }
+export class SharedModule {}

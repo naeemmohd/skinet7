@@ -4,8 +4,8 @@ namespace API.Errors
     {
         public ApiResponse(int statusCode, string message = null)
         {
-             StatusCode = statusCode;
-             Message = message ?? GetDefaultMessageForStatusCode(statusCode);
+            StatusCode = statusCode;
+            Message = message ?? GetDefaultMessageForStatusCode(statusCode);
         }
 
         public int StatusCode { get; set; }
@@ -13,7 +13,8 @@ namespace API.Errors
 
         private string GetDefaultMessageForStatusCode(int statusCode)
         {
-            return statusCode switch{
+            return statusCode switch
+            {
                 400 => "A bad request, you have made",
                 401 => "Authorized, you are not",
                 404 => "Resource found, it was not",
