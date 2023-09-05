@@ -59,7 +59,7 @@ catch (Exception ex)
 }
 
 //use Treblle
-app.UseTreblle(useExceptionHandler: true);
-app.MapGet("/", () => "Treblle is awesome").UseTreblle();
+//app.UseTreblle(useExceptionHandler: true);
+//app.MapGet("/", () => "Treblle is awesome").UseTreblle();
 
 app.Run();

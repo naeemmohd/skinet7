@@ -5,6 +5,7 @@ import { Product } from '../shared/models/products';
 import { Brand } from '../shared/models/brand';
 import { Type } from '../shared/models/type';
 import { ShopParams } from '../shared/models/shopParams';
+import { environment } from 'src/environments/environment.development';
 // Decorator that marks a class as available to be provided and injected 
 // as a dependency.
 @Injectable({
@@ -13,7 +14,7 @@ import { ShopParams } from '../shared/models/shopParams';
 })
 export class ShopService {
 
-  baseUrl = "https://localhost:5001/api/";
+  baseUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {
 

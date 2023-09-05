@@ -62,9 +62,10 @@ namespace API.Extensions
 			});
 
 			//add Treblle API Monitoring
-			services.AddTreblle(
-			config["Treblle:ApiKey"],
-    		config["Treblle:ProjectId"]);
+			//services.AddTreblle(
+			//config["Treblle:ApiKey"],
+    		//config["Treblle:ProjectId"]);
+			
 			return services;
 		}
 	}
