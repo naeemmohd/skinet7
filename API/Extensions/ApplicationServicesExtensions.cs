@@ -3,6 +3,7 @@ using Core.Interfaces;
 using InfraStructure.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Treblle.Net.Core;
 
 namespace API.Extensions
 {
@@ -60,6 +61,10 @@ namespace API.Extensions
 				});
 			});
 
+			//add Treblle API Monitoring
+			services.AddTreblle(
+			config["Treblle:ApiKey"],
+    		config["Treblle:ProjectId"]);
 			return services;
 		}
 	}

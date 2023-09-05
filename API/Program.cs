@@ -6,6 +6,7 @@ using InfraStructure.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Validations;
+using Treblle.Net.Core;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -56,5 +57,9 @@ catch (Exception ex)
 {
 	logger.LogError(ex, "An error occurred during migration");
 }
+
+//use Treblle
+app.UseTreblle(useExceptionHandler: true);
+app.MapGet("/", () => "Treblle is awesome").UseTreblle();
 
 app.Run();
