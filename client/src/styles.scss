@@ -10,8 +10,11 @@
 @import "node_modules/font-awesome/css/font-awesome";
 
 /* Import Bootswatch theme */
-@import "node_modules/bootswatch/dist/united/bootstrap";
+@import "node_modules/bootswatch/dist/minty/bootstrap";
+
+/* Import Spinner */
+@import "node_modules/ngx-spinner/animations/timer";
 
 label.xng-breadcrumb-trail{
-    color:orange
+    color:#78c2ad
 }

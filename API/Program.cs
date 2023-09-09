@@ -6,7 +6,7 @@ using InfraStructure.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Validations;
-using Treblle.Net.Core;
+//using Treblle.Net.Core;
 
 var builder = WebApplication.CreateBuilder(args);
 
