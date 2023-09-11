@@ -1,8 +1,10 @@
 using API.Errors;
 using Core.Interfaces;
 using InfraStructure.Data;
+using Microsoft.AspNetCore.Connections;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using StackExchange.Redis;
 //using Treblle.Net.Core;
 
 namespace API.Extensions
@@ -24,6 +26,17 @@ namespace API.Extensions
 				opt.UseSqlite(config.GetConnectionString("DefaultConnection"));
 			});
 
+			//Add Redis support
+			services.AddSingleton<IConnectionMultiplexer>(c =>
+				{
+					var options = ConfigurationOptions.Parse(config.GetConnectionString("Redis"));
+					return ConnectionMultiplexer.Connect(options);
+				}
+			);
+
+			//Inject the BasketRepository Service as scoped service
+			// BasketRepository registered
+			services.AddScoped<IBasketRepository, BasketRepository>();
 			//Inject the ProductRepository Service as scoped service, othr options could be transient and Singleton
 			// ProductRepository registered
 			services.AddScoped<IProductRepository, ProductRepository>();
