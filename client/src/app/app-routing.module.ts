@@ -20,8 +20,12 @@ const routes: Routes = [
     path: 'not-found', component: NotFoundComponent 
   },
   {
-    // route to lazy load cgild route when shop route is called
+    // route to lazy load child route when shop route is called
     path: 'shop', loadChildren: () => import('./shop/shop.module').then((m) => m.ShopModule),
+  }, 
+  {
+    // route to lazy load child route when shop route is called
+    path: 'basket', loadChildren: () => import('./basket/basket.module').then((m) => m.BasketModule),
   }, 
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];

@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { BasketService } from 'src/app/basket/basket.service';
 import { Product } from 'src/app/shared/models/products';
 
 @Component({
@@ -7,5 +8,12 @@ import { Product } from 'src/app/shared/models/products';
   styleUrls: ['./product-item.component.scss']
 })
 export class ProductItemComponent {
-  @Input() product?: Product
+  @Input() product?: Product;
+
+  constructor(private basketService: BasketService) {}
+
+  AddItemToBasket(){
+    // checks if products is not null
+    this.product && this.basketService.addItemtoBasket(this.product);
+  }
 }
