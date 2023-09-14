@@ -24,9 +24,13 @@ const routes: Routes = [
     path: 'shop', loadChildren: () => import('./shop/shop.module').then((m) => m.ShopModule),
   }, 
   {
-    // route to lazy load child route when shop route is called
+    // route to lazy load child route when shop basket is called
     path: 'basket', loadChildren: () => import('./basket/basket.module').then((m) => m.BasketModule),
   }, 
+  {
+    // route to lazy load child route when shop checkout is called
+    path: 'checkout', loadChildren: () => import('./checkout/checkout.module').then((m) => m.CheckoutModule),
+  },
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];
 
