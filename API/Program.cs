@@ -6,6 +6,10 @@ using InfraStructure.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Validations;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using InfraStructure.Identity;
+using Microsoft.AspNetCore.Identity;
+using Core.Identity;
 //using Treblle.Net.Core;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +20,7 @@ builder.Services.AddControllers();
 
 //most of the code moved to the Extension method
 builder.Services.AddApplicationServices(builder.Configuration);
+builder.Services.AddIdentityServices(builder.Configuration);
 
 var app = builder.Build();
 
@@ -39,19 +44,27 @@ app.UseStaticFiles();
 //use CORS policy
 app.UseCors("CorsPolicy");
 
+// Adds the Microsoft.AspNetCore.Authentication.AuthenticationMiddleware to the specified IApplicationBuilder
+app.UseAuthentication();
+// Adds the Microsoft.AspNetCore.Authorization.AuthorizationMiddleware to the specified IApplicationBuilder
 app.UseAuthorization();
-
+//Adds endpoints for controller actions to the IEndpointRouteBuilder without specifying any routes
 app.MapControllers();
 
 // automate EF DB creation
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;
 var context = services.GetRequiredService<StoreContext>();
+var identityContext = services.GetRequiredService<AppIdentityDbContext>();
+var userManager = services.GetRequiredService<UserManager<AppUser>>();
 var logger = services.GetRequiredService<ILogger<Program>>();
 try
 {
 	await context.Database.MigrateAsync();
 	await StoreContextSeed.SeedAsync(context);
+
+	await identityContext.Database.MigrateAsync();
+	await AppIdentityDbContextSeed.SeedUsersAsync(userManager);
 }
 catch (Exception ex)
 {
