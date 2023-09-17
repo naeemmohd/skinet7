@@ -1,7 +1,10 @@
+using System.Text;
 using Core.Identity;
 using InfraStructure.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace API.Extensions
 {
@@ -30,7 +33,19 @@ namespace API.Extensions
             .AddSignInManager<SignInManager<AppUser>>();
 
             // Registers services required by authentication services. 
-            services.AddAuthentication();
+            //uses JwtBearerDefaults AuthenticationScheme
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            //add a JWT Bearer Tocken with below Validating parameters
+            .AddJwtBearer(opt =>
+            {
+                opt.TokenValidationParameters = new TokenValidationParameters{
+                    ValidateIssuerSigningKey = true, //Validate Issue Key
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Token:Key"])), //Signing Key
+                    ValidIssuer = config["Token:Issuer"], // Valid Issuer
+                    ValidateIssuer = true, //Validate Issue 
+                    ValidateAudience = false // Validate Audience(client apps)
+                };
+            });
             // Adds authorization policy services to the specified IServiceCollection.
             services.AddAuthorization();
 

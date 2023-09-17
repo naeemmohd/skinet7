@@ -1,6 +1,7 @@
 using API.Errors;
 using Core.Interfaces;
 using InfraStructure.Data;
+using InfraStructure.Services;
 using Microsoft.AspNetCore.Connections;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -42,6 +43,9 @@ namespace API.Extensions
 			services.AddScoped<IProductRepository, ProductRepository>();
 			// services.AddTransient<IProductRepository, ProductRepository>();
 			// services.AddSingleton<IProductRepository, ProductRepository>();
+
+			// TokenService registered
+			services.AddScoped<ITokenService, TokenService>();
 
 			// GenericRepository registered 
 			services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));

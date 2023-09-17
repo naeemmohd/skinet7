@@ -1,5 +1,6 @@
 using API.Errors;
 using InfraStructure.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,6 +14,12 @@ namespace API.Controllers
             _storeContext = storeContext;
         }
 
+        [HttpGet("testauth")]
+        [Authorize]
+        public ActionResult<string> GetSecretText()
+        {
+            return "some secret stuff";
+        }
         [HttpGet("notfound")]
         public ActionResult GetNotFoundRequest()
         {
