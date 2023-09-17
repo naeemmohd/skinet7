@@ -17,10 +17,6 @@ namespace API.Extensions
 			IConfiguration config)
 		{
 
-			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-			services.AddEndpointsApiExplorer();
-			services.AddSwaggerGen();
-
 			//Add DBContext
 			services.AddDbContext<StoreContext>(opt =>
 			{
@@ -81,7 +77,7 @@ namespace API.Extensions
 			//add Treblle API Monitoring
 			//services.AddTreblle(
 			//config["Treblle:ApiKey"],
-    		//config["Treblle:ProjectId"]);
+			//config["Treblle:ProjectId"]);
 			
 			return services;
 		}
