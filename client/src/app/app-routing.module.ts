@@ -31,6 +31,10 @@ const routes: Routes = [
     // route to lazy load child route when shop checkout is called
     path: 'checkout', loadChildren: () => import('./checkout/checkout.module').then((m) => m.CheckoutModule),
   },
+  {
+    // route to lazy load child route when login and register is called
+    path: 'account', loadChildren: () => import('./account/account.module').then((m) => m.AccountModule),
+  },
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];
 

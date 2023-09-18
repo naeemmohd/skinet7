@@ -5,3 +5,4 @@ cd ssl
 choco install mkcert
 mkcert -install
 mkcert localhost
+ng serve --ssl true
