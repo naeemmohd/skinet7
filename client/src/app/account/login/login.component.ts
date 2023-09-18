@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AccountService } from '../account.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -9,7 +10,7 @@ import { AccountService } from '../account.service';
 })
 export class LoginComponent {
 
-  constructor(private accountService: AccountService){}
+  constructor(private accountService: AccountService, private router: Router){}
 
   //create a new Reactive form
   loginForm = new FormGroup({
@@ -21,7 +22,7 @@ export class LoginComponent {
   onSubmit() {
     console.log(this.loginForm.value);
     this.accountService.login(this.loginForm.value).subscribe({
-      next: user => console.log(user)
+      next: () => this.router.navigateByUrl("/shop")
     });
   }
 }
