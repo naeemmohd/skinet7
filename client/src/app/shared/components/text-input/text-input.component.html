@@ -9,4 +9,5 @@
     <label for="floatingInput">{{label}}</label>
     <div *ngIf="control.errors?.['required']" class="invalid-feedback">Please enter {{label}}</div>
     <div *ngIf="control.errors?.['email']" class="invalid-feedback">Please enter a valid email id</div>
+    <div *ngIf="control.errors?.['pattern']" class="invalid-feedback">Password is not complex</div>
 </div>
