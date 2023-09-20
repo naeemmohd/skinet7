@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AccountService } from '../account.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -10,11 +10,16 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent {
 
-  constructor(private accountService: AccountService, private router: Router){}
+  returnUrl: string;
+
+  constructor(private accountService: AccountService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute) { 
+      this.returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'] || "/shop";
+    }
 
   regComplexPassword = "(?=^.{6,10}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&amp;*()_+}{&quot;:;'?/&gt;.&lt;,])(?!.*\s).*$"
   
-
   //create a new Reactive form
   loginForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -25,7 +30,7 @@ export class LoginComponent {
   onSubmit() {
     console.log(this.loginForm.value);
     this.accountService.login(this.loginForm.value).subscribe({
-      next: () => this.router.navigateByUrl("/shop")
+      next: () => this.router.navigateByUrl(this.returnUrl)
     });
   }
 }

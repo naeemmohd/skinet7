@@ -1,15 +1,16 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { ActivatedRouteSnapshot, RouterModule, RouterStateSnapshot, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { TestErrorComponent } from './core/test-error/test-error.component';
 import { ServerErrorComponent } from './core/server-error/server-error.component';
 import { NotFoundComponent } from './core/not-found/not-found.component';
+import { AuthGuard } from './core/guards/auth.guard';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, data: {breadcrumb:'Home'} },
   { 
     // route for test-error 
-    path: 'test-error', component: TestErrorComponent 
+    path: 'test-error', component: TestErrorComponent, 
   },
   { 
     // route for server-error 
@@ -29,7 +30,9 @@ const routes: Routes = [
   }, 
   {
     // route to lazy load child route when shop checkout is called
-    path: 'checkout', loadChildren: () => import('./checkout/checkout.module').then((m) => m.CheckoutModule),
+    path: 'checkout', 
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./checkout/checkout.module').then(m => m.CheckoutModule)
   },
   {
     // route to lazy load child route when login and register is called
