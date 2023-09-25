@@ -9,7 +9,7 @@ using Microsoft.OpenApi.Validations;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using InfraStructure.Identity;
 using Microsoft.AspNetCore.Identity;
-using Core.Identity;
+using Core.Entities.Identity;
 //using Treblle.Net.Core;
 
 var builder = WebApplication.CreateBuilder(args);

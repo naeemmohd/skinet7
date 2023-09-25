@@ -42,5 +42,22 @@ namespace InfraStructure.Data
 		{
 			return await ApplySpecification(spec).CountAsync();
 		}
+
+		void IGenericRepository<T>.Add(T entity)
+		{
+			_context.Set<T>().Add(entity);
+		}
+
+		void IGenericRepository<T>.Update(T entity)
+		{
+			_context.Set<T>().Attach(entity);
+			_context.Entry(entity).State = EntityState.Modified;
+			
+		}
+
+		void IGenericRepository<T>.Delete(T entity)
+		{
+			_context.Set<T>().Remove(entity);
+		}
 	}
 }

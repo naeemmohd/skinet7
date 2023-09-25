@@ -44,6 +44,8 @@ namespace API.Extensions
 			services.AddScoped<ITokenService, TokenService>();
 			// OrderService registered
 			services.AddScoped<IOrderService, OrderService>();
+			// UnitOfWork registered
+			services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 			// GenericRepository registered 
 			services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
