@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, OnSameUrlNavigation } from '@angular/router';
-import { Product } from 'src/app/shared/models/products';
+import { Product } from 'src/app/shared/models/product';
 import { ShopService } from '../shop.service';
 import { BreadcrumbService } from 'xng-breadcrumb';
 import { BasketService } from 'src/app/basket/basket.service';
@@ -75,11 +75,11 @@ export class ProductDetailsComponent implements OnInit {
         //then add proper qunatity to basket
         const itemsToAdd = this.quantity - this.quantityInBasket;
         this.quantityInBasket += itemsToAdd;
-        this.basketService.addItemtoBasket(this.product, itemsToAdd);
+        this.basketService.addItemToBasket(this.product, itemsToAdd);
       } else{
         const itemstoRemove = this.quantityInBasket - this.quantity;
         this.quantityInBasket -= itemstoRemove;
-        this.basketService.removeItemtoBasket(this.product.id, itemstoRemove);
+        this.basketService.removeItemFromBasket(this.product.id, itemstoRemove);
       }
     }
   }

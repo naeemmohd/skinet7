@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { BasketService } from 'src/app/basket/basket.service';
-import { Product } from 'src/app/shared/models/products';
+import { Product } from 'src/app/shared/models/product';
 
 @Component({
   selector: 'app-product-item',
@@ -14,6 +14,6 @@ export class ProductItemComponent {
 
   AddItemToBasket(){
     // checks if products is not null
-    this.product && this.basketService.addItemtoBasket(this.product);
+    this.product && this.basketService.addItemToBasket(this.product);
   }
 }

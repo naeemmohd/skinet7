@@ -11,10 +11,10 @@ export class BasketComponent {
   constructor(public basketService: BasketService) {}
 
   incrementQuantity(item: BasketItem){
-    this.basketService.addItemtoBasket(item);
+    this.basketService.addItemToBasket(item);
   }
 
-  removeItem(id: number, quantity: number){
-    this.basketService.removeItemtoBasket(id, quantity);
+  removeItem(event: { id: number, quantity: number }){
+    this.basketService.removeItemFromBasket(event.id, event.quantity);
   }
 }
