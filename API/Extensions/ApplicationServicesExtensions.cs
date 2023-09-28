@@ -40,6 +40,8 @@ namespace API.Extensions
 			// services.AddTransient<IProductRepository, ProductRepository>();
 			// services.AddSingleton<IProductRepository, ProductRepository>();
 
+			// PaymentService registered
+			services.AddScoped<IPaymentService, PaymentService>();
 			// TokenService registered
 			services.AddScoped<ITokenService, TokenService>();
 			// OrderService registered
