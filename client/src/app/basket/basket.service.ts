@@ -134,3 +134,4 @@ export class BasketService {
     return (item as Product).productBrand !== undefined;
   }
 }
+

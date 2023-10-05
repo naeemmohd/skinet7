@@ -1,4 +1,33 @@
+//extensions.json
 {
-  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=827846
-  "recommendations": ["angular.ng-template"]
+  "recommendations": [
+      "angular.ng-template",
+      "wmaurer.change-case",
+      "kamikillerto.vscode-colorize",
+      "mikestead.dotenv",
+      "dbaeumer.vscode-eslint",
+      "waderyan.gitblame",
+      "donjayamanne.githistory",
+      "eamodio.gitlens",
+      "zignd.html-css-class-completion",
+      "christian-kohler.npm-intellisense",
+      "esbenp.prettier-vscode",
+      "rvest.vs-code-prettier-eslint",
+      "humao.rest-client",
+      "sibiraj-s.vscode-scss-formatter",
+      "mrmlnc.vscode-scss",
+      "stylelint.vscode-stylelint",
+      "wayou.vscode-todo-highlight",
+      "gruntfuggly.todo-tree",
+      "rbbit.typescript-hero",
+      "johnpapa.angular-essentials",
+      "loiane.angular-extension-pack",
+      "alexiv.vscode-angular2-files",
+      "simontest.simontest",
+      "rctay.karma-problem-matcher",
+      "formulahendry.auto-rename-tag",
+      "segerdekort.angular-cli",
+      "johnpapa.angular2",
+      "cyrilletuzi.angular-schematics"
+  ]
 }
