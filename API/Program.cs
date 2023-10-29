@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using InfraStructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Core.Entities.Identity;
-//using Treblle.Net.Core;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,7 +40,14 @@ if (app.Environment.IsDevelopment())
 
 app.UseSwaggerDocumentation();
 
-app.UseStaticFiles();
+app.UseStaticFiles(); //use wwwroot
+app.UseStaticFiles(new StaticFileOptions
+{
+	FileProvider = new PhysicalFileProvider(
+		Path.Combine(Directory.GetCurrentDirectory(), "Content")),
+		RequestPath = "/Content"
+}); //use custom path e.g. content
+
 
 //use CORS policy
 app.UseCors("CorsPolicy");
@@ -51,6 +58,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 //Adds endpoints for controller actions to the IEndpointRouteBuilder without specifying any routes
 app.MapControllers();
+// for fallback routes
+app.MapFallbackToController("Index", "Fallback");
 
 // automate EF DB creation
 using var scope = app.Services.CreateScope();
@@ -71,9 +80,5 @@ catch (Exception ex)
 {
 	logger.LogError(ex, "An error occurred during migration");
 }
-
-//use Treblle
-//app.UseTreblle(useExceptionHandler: true);
-//app.MapGet("/", () => "Treblle is awesome").UseTreblle();
 
 app.Run();
