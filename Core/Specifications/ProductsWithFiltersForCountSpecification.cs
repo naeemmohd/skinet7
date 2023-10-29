@@ -6,9 +6,9 @@ using Core.Entities;
 
 namespace Core.Specifications
 {
-	public class ProductWithFiltersForCountSpecification : BaseSpecification<Product>
+	public class ProductsWithFiltersForCountSpecification : BaseSpecification<Product>
 	{
-		public ProductWithFiltersForCountSpecification(ProductSpecsParams productSpecsParams)
+		public ProductsWithFiltersForCountSpecification(ProductSpecsParams productSpecsParams)
 		//for filtering
 		: base(x =>
 			(string.IsNullOrEmpty(productSpecsParams.Search) || x.Name.ToLower().Contains(productSpecsParams.Search)) &&

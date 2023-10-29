@@ -1,92 +1,65 @@
 using API.Errors;
 using Core.Interfaces;
+using Infrastructure.Data;
 using Infrastructure.Services;
 using InfraStructure.Data;
 using InfraStructure.Services;
-using Microsoft.AspNetCore.Connections;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
-//using Treblle.Net.Core;
 
 namespace API.Extensions
 {
-	public static class ApplicationServicesExtensions
-	{
-		//extension method
-		public static IServiceCollection AddApplicationServices(this IServiceCollection services,
-			IConfiguration config)
-		{
+    public static class ApplicationServicesExtensions
+    {
+        public static IServiceCollection AddApplicationServices(this IServiceCollection services,
+            IConfiguration config)
+        {
+            services.AddSingleton<IResponseCacheService, ResponseCacheService>();
+            services.AddDbContext<StoreContext>(opt =>
+            {
+                opt.UseSqlite(config.GetConnectionString("DefaultConnection"));
+            });
+            services.AddSingleton<IConnectionMultiplexer>(c => 
+            {
+                var options = ConfigurationOptions.Parse(config.GetConnectionString("Redis"));
+                return ConnectionMultiplexer.Connect(options);
+            });
+            services.AddScoped<IBasketRepository, BasketRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IPaymentService, PaymentService>();
+            services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.InvalidModelStateResponseFactory = actionContext =>
+                {
+                    var errors = actionContext.ModelState
+                        .Where(e => e.Value.Errors.Count > 0)
+                        .SelectMany(x => x.Value.Errors)
+                        .Select(x => x.ErrorMessage).ToArray();
 
-			//Add DBContext
-			services.AddDbContext<StoreContext>(opt =>
-			{
-				opt.UseSqlite(config.GetConnectionString("DefaultConnection"));
-			});
+                    var errorResponse = new ApiValidationErrorResponse
+                    {
+                        Errors = errors
+                    };
 
-			//Add Redis support
-			services.AddSingleton<IConnectionMultiplexer>(c =>
-				{
-					var options = ConfigurationOptions.Parse(config.GetConnectionString("Redis"));
-					return ConnectionMultiplexer.Connect(options);
-				}
-			);
+                    return new BadRequestObjectResult(errorResponse);
+                };
+            });
 
-			//Inject the BasketRepository Service as scoped service
-			// BasketRepository registered
-			services.AddScoped<IBasketRepository, BasketRepository>();
-			//Inject the ProductRepository Service as scoped service, othr options could be transient and Singleton
-			// ProductRepository registered
-			services.AddScoped<IProductRepository, ProductRepository>();
-			// services.AddTransient<IProductRepository, ProductRepository>();
-			// services.AddSingleton<IProductRepository, ProductRepository>();
+            services.AddCors(opt =>
+            {
+                opt.AddPolicy("CorsPolicy", policy => 
+                {
+                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200");
+                });
+            });
 
-			// PaymentService registered
-			services.AddScoped<IPaymentService, PaymentService>();
-			// TokenService registered
-			services.AddScoped<ITokenService, TokenService>();
-			// OrderService registered
-			services.AddScoped<IOrderService, OrderService>();
-			// UnitOfWork registered
-			services.AddScoped<IUnitOfWork, UnitOfWork>();
-
-			// GenericRepository registered 
-			services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-			services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-			services.Configure<ApiBehaviorOptions>(options =>
-				options.InvalidModelStateResponseFactory = actionContext =>
-				{
-					var errors = actionContext.ModelState
-					.Where(w => w.Value.Errors.Count > 0)
-					.SelectMany(m => m.Value.Errors)
-					.Select(s => s.ErrorMessage).ToArray();
-
-					var errorResponse = new ApiValidationErrorResponse
-					{
-						Errors = errors
-					};
-
-					return new BadRequestObjectResult(errorResponse);
-				}
-			);
-
-			// add CORS policy 
-			services.AddCors(opt =>
-			{
-				opt.AddPolicy("CorsPolicy", policy =>
-				{
-					policy.AllowAnyHeader()
-						.AllowAnyMethod()
-						.WithOrigins("https://localhost:4200");
-				});
-			});
-
-			//add Treblle API Monitoring
-			//services.AddTreblle(
-			//config["Treblle:ApiKey"],
-			//config["Treblle:ProjectId"]);
-			
-			return services;
-		}
-	}
+            return services;
+        }
+    }
 }
