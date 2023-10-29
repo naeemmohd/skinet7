@@ -32,10 +32,6 @@ namespace API.Extensions
 				}
 			);
 
-			//Inject the ResponseCacheService Service as singleton service, so that its always available accros all scopes
-			// ResponseCacheService registered
-			services.AddSingleton<IResponseCacheService, ResponseCacheService>();
-			
 			//Inject the BasketRepository Service as scoped service
 			// BasketRepository registered
 			services.AddScoped<IBasketRepository, BasketRepository>();
