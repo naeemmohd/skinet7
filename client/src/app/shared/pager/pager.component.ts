@@ -9,6 +9,7 @@ export class PagerComponent {
   // input params are used to pass data from parent to child component
   @Input() totalCount?: number;
   @Input() pageSize?: number;
+  @Input() pageNumber?: number;
 
   // Output params are used to pass data from child to parent component
   @Output() pageChanged = new EventEmitter<number>();
