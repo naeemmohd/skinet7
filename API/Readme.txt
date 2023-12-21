@@ -14,7 +14,11 @@ for scaffolding EF code migration -
  create/update DB - dotnet ef database update
  for dropping an exiting database - dotnet ef database drop -p InfraStructure -s API
  for dropping an exiting migration - dotnet ef migrations remove -p InfraStructure -s API
- for adding new migration - dotnet ef migrations add InitialCreate -p InfraStructure -s API -o Data/Migrations
+ for adding new migration (SQLite) - dotnet ef migrations add InitialCreate -p InfraStructure -s API -o Data/Migrations
+ for adding new migration (Postgres) - 
+  - dotnet ef migrations add "Postgres initial" -p InfraStructure -s API -c StoreContext -o Data/Migrations
+  - dotnet ef migrations add "Postgres initial" -p InfraStructure -s API -c AppIdentityDbContext -o Identity/Migrations
+  
 Dotnet commands - 
 
     for list of commands - dotnew new list
