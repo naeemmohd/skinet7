@@ -90,7 +90,7 @@ namespace InfraStructure.Data.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Description = table.Column<string>(type: "character varying(180)", maxLength: 180, nullable: false),
+                    Description = table.Column<string>(type: "character varying(256)", maxLength: 180, nullable: false),
                     Price = table.Column<decimal>(type: "numeric(18,2)", nullable: false),
                     PictureUrl = table.Column<string>(type: "text", nullable: false),
                     ProductTypeId = table.Column<int>(type: "integer", nullable: false),

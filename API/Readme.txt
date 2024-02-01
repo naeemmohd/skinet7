@@ -18,7 +18,8 @@ for scaffolding EF code migration -
  for adding new migration (Postgres) - 
   - dotnet ef migrations add "Postgres initial" -p InfraStructure -s API -c StoreContext -o Data/Migrations
   - dotnet ef migrations add "Postgres initial" -p InfraStructure -s API -c AppIdentityDbContext -o Identity/Migrations
-  
+ for dropping database - dotnet ef database drop -s API -p Infrastructure -c AppIdentityDbContext 
+ and dotnet ef database drop -s API -p Infrastructure -c StoreDbContext
 Dotnet commands - 
 
     for list of commands - dotnew new list

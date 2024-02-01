@@ -116,7 +116,7 @@ namespace InfraStructure.Data.Migrations
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(180)
-                        .HasColumnType("character varying(180)");
+                        .HasColumnType("character varying(256)");
 
                     b.Property<string>("Name")
                         .IsRequired()
